@@ -7,11 +7,11 @@ require "voter_love/version"
 Gem::Specification.new do |s|
   s.name        = "voter_love"
   s.version     = VoterLove::VERSION
-  s.authors     = ["TODO: Your name"]
-  s.email       = ["TODO: Your email"]
-  s.homepage    = "TODO"
-  s.summary     = "TODO: Summary of VoterLove."
-  s.description = "TODO: Description of VoterLove."
+  s.authors     = ["Karl Gusner"]
+  s.email       = ["karlgusner@gmail.com"]
+  s.homepage    = "https://github.com/ramz15/voter_love"
+  s.summary     = "an easy to use voting system"
+  s.description = "simple voting gem for Ruby on Rails."
 
   s.files = Dir["{app,config,db,lib}/**/*"] + ["MIT-LICENSE", "Rakefile", "README.rdoc"]
   s.test_files = Dir["test/**/*"]
