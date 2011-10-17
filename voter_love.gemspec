@@ -10,8 +10,8 @@ Gem::Specification.new do |s|
   s.authors     = ["Karl Gusner"]
   s.email       = ["karlgusner@gmail.com"]
   s.homepage    = "https://github.com/ramz15/voter_love"
-  s.summary     = "an easy to use voting system"
-  s.description = "simple voting gem for Ruby on Rails."
+  s.summary     = "An easy to use voting gem for Rails 3"
+  s.description = "An easy to use voting gem for Rails 3"
 
   s.files = Dir["{app,config,db,lib}/**/*"] + ["MIT-LICENSE", "Rakefile", "README.rdoc"]
   s.test_files = Dir["test/**/*"]
@@ -19,4 +19,11 @@ Gem::Specification.new do |s|
   s.add_dependency "rails", "~> 3.1.0"
 
   s.add_development_dependency "sqlite3"
+  s.add_development_dependency "rspec", "~> 2.5.0"
+  s.add_development_dependency "generator_spec", "~> 0.8.2"
+  
+  s.files        = `git ls-files`.split("\n")
+  s.executables  = `git ls-files`.split("\n").map{|f| f =~ /^bin\/(.*)/ ? $1 : nil}.compact
+  s.require_path = 'lib'
+  
 end
