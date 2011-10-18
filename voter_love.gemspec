@@ -11,7 +11,7 @@ Gem::Specification.new do |s|
   s.email       = ["karlgusner@gmail.com"]
   s.homepage    = "https://github.com/ramz15/voter_love"
   s.summary     = "An easy to use voting gem for Rails 3"
-  s.description = "An easy to use voting gem for Rails 3"
+  s.description = "The voter_love Gem allows users to easily vote on objects"
 
   s.files = Dir["{app,config,db,lib}/**/*"] + ["MIT-LICENSE", "Rakefile", "README.rdoc"]
   s.test_files = Dir["test/**/*"]

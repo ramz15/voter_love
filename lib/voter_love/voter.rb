@@ -125,9 +125,9 @@ module VoterLove
     
       def get_vote(votable)
         Vote.where(
-          :votable_type => votable.class.to_s
-          :votable_id => votable.id
-          :voter_type => self.class.to_s
+          :votable_type => votable.class.to_s,
+          :votable_id => votable.id,
+          :voter_type => self.class.to_s,
           :voter_id => self.id).try(:first)
       end  
     
