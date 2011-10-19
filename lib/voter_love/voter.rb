@@ -22,7 +22,7 @@ module VoterLove
       if vote
         if vote.up_vote
           raise Exceptions::AlreadyVotedError.new(true)
-        end
+        else
           vote.up_vote = true
           votable.down_votes -= 1
           self.down_votes -= 1 if has_attribute?(:down_votes)
