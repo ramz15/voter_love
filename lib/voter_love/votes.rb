@@ -1,5 +1,5 @@
 module VoterLove
-  class Votes < ActiveRecord::Base
+  class Vote < ActiveRecord::Base
     attr_accessible :votable, :voter, :up_vote
     
     belongs_to :votable, :polymorphic => true

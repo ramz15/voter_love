@@ -1,3 +1,55 @@
 = Voter Love
 
-An easy to use Rails 3.1 voting Gem
+A simple, easy to use Rails 3.1 voting Gem.
+
+== Installation
+
+add the voter_love gem to your Gemfile:
+
+  gem 'voter_love'
+  
+create and generate the voter_love migration:
+  
+  rails generate voter_love
+  
+you will then need to add up_votes and down_votes columns to your User (voter) and Object (e.g. links) (votable) migrations:
+  
+  add_column :users, :up_votes, :integer, :null => false, :default => 0
+  add_column :users, :down_votes, :integer, :null => false, :default => 0
+  add_column :links, :up_votes, :integer, :null => false, :default => 0
+  add_column :links, :down_votes, :integer, :null => false, :default => 0
+  
+== Usage
+
+Turn your objects (e.g. links) into a votable model:
+
+  class Link < ActiveRecord::Base
+    acts_as_votable
+  end
+  
+Turn your users (or any other model) into a voter model:
+
+  class User < ActiveRecord::Base
+    acts_as_voter
+  end
+  
+To vote for an object (with an error raised if user already voted on the object):
+
+  user.up_vote(link)
+  user.down_vote(link)
+  
+To vote for an object (and ignore the vote if the user has already voted on the object):
+
+  user.up_vote!(link)
+  user.down_vote!(link)
+  
+Total score (up votes - down votes)
+  
+  link.score
+
+  
+  
+  
+  
+
+  

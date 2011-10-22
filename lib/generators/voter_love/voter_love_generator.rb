@@ -4,7 +4,7 @@ require 'rails/generators/active_record'
 class VoterLoveGenerator < Rails::Generators::Base
   include Rails::Generators::Migration
 
-  desc "Generates a migration for the Vote model"
+  desc "Generates a migration for the Votes model"
 
   def self.source_root
     @source_root ||= File.dirname(__FILE__) + '/templates'

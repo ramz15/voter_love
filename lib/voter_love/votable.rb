@@ -3,7 +3,7 @@ module VoterLove
     extend ActiveSupport::Concern
 
     included do
-      has_many :votes, :class_name => "VoterLove::Votes", :as => :votable
+      has_many :votes, :class_name => "VoterLove::Vote", :as => :votable
     end
 
     module ClassMethods

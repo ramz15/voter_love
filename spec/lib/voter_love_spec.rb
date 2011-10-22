@@ -2,11 +2,11 @@ require File.expand_path('../../spec_helper', __FILE__)
 
 describe "Voter Love" do
   before(:each) do
-    @votable = VotableModel.create(:name => "Votable 1")
-    @voter = VoterModel.create(:name => "Voter 1")
+    @votable = VotableModel.create(:name => "votable a")
+    @voter = VoterModel.create(:name => "voter b")
   end
 
-  it "should create a votable instance" do
+  it "should be votable" do
     @votable.class.should == VotableModel
     @votable.class.votable?.should == true
   end
@@ -18,11 +18,11 @@ describe "Voter Love" do
 
   it "should get correct vote summary" do
     @voter.up_vote(@votable).should == true
-    @votable.votes.should == 1
+    @votable.score.should == 1
     @voter.down_vote(@votable).should == true
-    @votable.votes.should == -1
+    @votable.score.should == -1
     @voter.unvote(@votable).should == true
-    @votable.votes.should == 0
+    @votable.score.should == 0
   end
 
   it "votable should have up vote votes" do
@@ -67,10 +67,10 @@ describe "Voter Love" do
     end
 
     it "should create a voting" do
-      VoterLove::Votes.count.should == 0
+      VoterLove::Vote.count.should == 0
       @voter.up_vote(@votable)
-      VoterLove::Votes.count.should == 1
-      voting = VoterLove::Votes.first
+      VoterLove::Vote.count.should == 1
+      voting = VoterLove::Vote.first
       voting.votable.should == @votable
       voting.voter.should == @voter
       voting.up_vote.should == true
@@ -95,15 +95,15 @@ describe "Voter Love" do
       @votable.down_votes.should == 1
       @voter.up_votes.should == 0
       @voter.down_votes.should == 1
-      VoterLove::Votes.count.should == 1
-      VoterLove::Votes.first.up_vote.should be_false
+      VoterLove::Vote.count.should == 1
+      VoterLove::Vote.first.up_vote.should be_false
       @voter.up_vote(@votable)
       @votable.up_votes.should == 1
       @votable.down_votes.should == 0
       @voter.up_votes.should == 1
       @voter.down_votes.should == 0
-      VoterLove::Votes.count.should == 1
-      VoterLove::Votes.first.up_vote.should be_true
+      VoterLove::Vote.count.should == 1
+      VoterLove::Vote.first.up_vote.should be_true
     end
 
     it "should allow up votes from different voters" do
@@ -111,7 +111,7 @@ describe "Voter Love" do
       @voter.up_vote(@votable)
       @voter2.up_vote(@votable)
       @votable.up_votes.should == 2
-      VoterLove::Votes.count.should == 2
+      VoterLove::Vote.count.should == 2
     end
 
     it "should raise an error for an invalid votable" do
@@ -141,10 +141,10 @@ describe "Voter Love" do
     end
 
     it "should create a voting" do
-      VoterLove::Votes.count.should == 0
+      VoterLove::Vote.count.should == 0
       @voter.down_vote(@votable)
-      VoterLove::Votes.count.should == 1
-      voting = VoterLove::Votes.first
+      VoterLove::Vote.count.should == 1
+      voting = VoterLove::Vote.first
       voting.votable.should == @votable
       voting.voter.should == @voter
       voting.up_vote.should == false
@@ -160,7 +160,7 @@ describe "Voter Love" do
       lambda {
         @voter.down_vote!(@votable).should == false
       }.should_not raise_error(VoterLove::Exceptions::AlreadyVotedError)
-      VoterLove::Votes.count.should == 1
+      VoterLove::Vote.count.should == 1
     end
 
     it "should change an up vote to a down vote" do
@@ -169,15 +169,15 @@ describe "Voter Love" do
       @votable.down_votes.should == 0
       @voter.up_votes.should == 1
       @voter.down_votes.should == 0
-      VoterLove::Votes.count.should == 1
-      VoterLove::Votes.first.up_vote.should be_true
+      VoterLove::Vote.count.should == 1
+      VoterLove::Vote.first.up_vote.should be_true
       @voter.down_vote(@votable)
       @votable.up_votes.should == 0
       @votable.down_votes.should == 1
       @voter.up_votes.should == 0
       @voter.down_votes.should == 1
-      VoterLove::Votes.count.should == 1
-      VoterLove::Votes.first.up_vote.should be_false
+      VoterLove::Vote.count.should == 1
+      VoterLove::Vote.first.up_vote.should be_false
     end
 
     it "should allow down votes from different voters" do
@@ -185,7 +185,7 @@ describe "Voter Love" do
       @voter.down_vote(@votable)
       @voter2.down_vote(@votable)
       @votable.down_votes.should == 2
-      VoterLove::Votes.count.should == 2
+      VoterLove::Vote.count.should == 2
     end
 
     it "should raise an error for an invalid votable" do
@@ -198,39 +198,6 @@ describe "Voter Love" do
       @voter.voted?(@votable).should be_true
       @voter.up_voted?(@votable).should be_false
       @voter.down_voted?(@votable).should be_true
-    end
-  end
-
-  describe "unvote" do
-    it "should decrease the up votes if up voted before" do
-      @voter.up_vote(@votable)
-      @votable.up_votes.should == 1
-      @voter.up_votes.should == 1
-      @voter.unvote(@votable)
-      @votable.up_votes.should == 0
-      @voter.up_votes.should == 0
-    end
-
-    it "should remove the voting" do
-      @voter.up_vote(@votable)
-      VoterLove::Votes.count.should == 1
-      @voter.unvote(@votable)
-      VoterLove::Votes.count.should == 0
-    end
-
-    it "should raise an error if voter didn't vote for the votable" do
-      lambda { @voter.unvote(@votable) }.should raise_error(VoterLove::Exceptions::NotVotedError)
-    end
-
-    it "should not raise error if voter didn't vote for the votable and unvote! is called" do
-      lambda {
-        @voter.unvote!(@votable).should == false
-      }.should_not raise_error(VoterLove::Exceptions::NotVotedError)
-    end
-
-    it "should raise an error for an invalid votable" do
-      invalid_votable = InvalidVotableModel.create
-      lambda { @voter.unvote(invalid_votable) }.should raise_error(VoterLove::Exceptions::InvalidVotableError)
     end
   end
 end
